@@ -1,6 +1,6 @@
 # fits-registration
 
-CLI tool for registrating FITS sub-exposures (WIP)
+CLI tool for registering FITS sub-exposures (WIP)
 
 ## Performance
 
