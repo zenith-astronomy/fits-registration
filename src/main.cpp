@@ -9,9 +9,7 @@
 #include "fits/fits.h"
 #include "fits/dir.h"
 
-#include "algorithms/average.h"
-#include "algorithms/median.h"
-#include "algorithms/min-max.h"
+#include "registration/registration.h"
 
 Fits LoadFits(const fs::path& path)
 {
@@ -49,9 +47,9 @@ int main()
         std::istringstream stream(input);
         stream >> command;
 
-        if(command == "stack" ||
-           command == "integrate" ||
-           command == "s")
+        if(command == "register" ||
+           command == "align" ||
+           command == "r")
         {
             auto start = std::chrono::steady_clock::now();
 
@@ -121,32 +119,6 @@ int main()
             std::cout << "Parsed " << frames.size() << " FITS files in " << elapsed << "ms\n";
 
             start = std::chrono::steady_clock::now();
-
-            if (algorithm == "average")
-            {
-                Fits result = IntegrateAverage(frames);
-                WriteToDir(result, dirPath);
-            }
-            else if (algorithm == "median")
-            {
-                Fits result = IntegrateMedian(frames);
-                WriteToDir(result, dirPath);
-            }
-            else if (algorithm == "maximum")
-            {
-                Fits result = IntegrateMaximum(frames);
-                WriteToDir(result, dirPath);
-            }
-            else if (algorithm == "minimum")
-            {
-                Fits result = IntegrateMinimum(frames);
-                WriteToDir(result, dirPath);
-            }
-            else
-            {
-                std::cerr << "The selected integration algorithm is not available\n";
-                continue;
-            }
 
             end = std::chrono::steady_clock::now();
 
