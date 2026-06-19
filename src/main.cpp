@@ -57,7 +57,7 @@ int main()
 
             if (!(stream >> algorithm))
             {
-                std::cerr << "Usage: stack <algorithm> <directory path>\n";
+                std::cerr << "Usage: register <algorithm> <directory path>\n";
                 continue;
             }
 
@@ -66,7 +66,7 @@ int main()
 
             if (dirPath.empty())
             {
-                std::cerr << "Usage: stack <algorithm> <directory path>\n";
+                std::cerr << "Usage: register <algorithm> <directory path>\n";
                 continue;
             }
 
@@ -125,6 +125,26 @@ int main()
             elapsed = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() / 1000);
 
             std::cout << "Stacked " << frames.size() << " FITS files in " << elapsed << "ms\n";
+        }
+        else if (command == "MAD")
+        {
+            std::string path;
+            std::getline(stream >> std::ws, path);
+
+            if (path.empty())
+            {
+                std::cerr << "Usage: MAD <path>\n";
+                continue;
+            }
+
+            if (path.size() >= 2 && path.front() == '"' && path.back() == '"')
+            {
+                path = path.substr(1, path.size() - 2);
+            }
+
+            Fits fits = LoadFits(path);
+
+            std::cout << "MAD: " << MAD(fits.pixels) << '\n';
         }
         else if (command == "quit" ||
                  command == "exit" ||
